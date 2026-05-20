@@ -1,5 +1,5 @@
 # syntax=docker/dockerfile:1
-FROM php:8.4-fpm
+FROM php:8.2-fpm
 
 # Arguments defined in docker-compose.yml
 ARG user
@@ -24,23 +24,18 @@ RUN docker-php-ext-install pdo_mysql mbstring exif pcntl bcmath gd
 # Get latest Composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
-# Create system user and assign /bin/bash as the default shell
-RUN useradd -G www-data,root -u $uid -d /home/$user -s /bin/bash $user
+# Create system user to run Composer and Artisan Commands
+RUN useradd -G www-data,root -u $uid -d /home/$user $user
 RUN mkdir -p /home/$user/.composer && \
     chown -R $user:$user /home/$user
 
-# Set working directory (Docker creates this folder as root)
+# Set working directory
 WORKDIR /var/www
 
-# Copy files into the directory
 COPY . /var/www
 
-# Fix ownership of the parent directory and all files while still root
 RUN chown -R $user:$user /var/www
 
-# Switch to your custom user
 USER $user
-
-RUN git config --global --add safe.directory /var/www
 
 RUN composer install
