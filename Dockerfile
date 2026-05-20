@@ -29,11 +29,16 @@ RUN useradd -G www-data,root -u $uid -d /home/$user -s /bin/bash $user
 RUN mkdir -p /home/$user/.composer && \
     chown -R $user:$user /home/$user
 
-# Set working directory
+# Set working directory (Docker creates this folder as root)
 WORKDIR /var/www
 
-COPY --chown=$user:$user . /var/www
+# Copy files into the directory
+COPY . /var/www
 
+# Fix ownership of the parent directory and all files while still root
+RUN chown -R $user:$user /var/www
+
+# Switch to your custom user
 USER $user
 
 RUN git config --global --add safe.directory /var/www
