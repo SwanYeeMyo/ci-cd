@@ -36,4 +36,6 @@ COPY --chown=$user:$user . /var/www
 
 USER $user
 
+RUN git config --global --add safe.directory /var/www
+
 RUN composer install
