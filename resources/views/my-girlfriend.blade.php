@@ -7,15 +7,17 @@
     <title>Our Story - Page by Page</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <!-- Updated font to Roboto -->
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700;900&display=swap" rel="stylesheet">
     <style>
         :root {
-            --bg-color: #0f172a;
-            --card-bg: rgba(30, 41, 59, 0.9);
-            --primary-accent: #f43f5e;
-            --secondary-accent: #8b5cf6;
-            --text-main: #f8fafc;
-            --text-muted: #cbd5e1;
+            /* Premium Pink Theme */
+            --bg-color: #fce7f3; /* pink-100 */
+            --card-bg: rgba(255, 255, 255, 0.9);
+            --primary-accent: #db2777; /* pink-600 */
+            --secondary-accent: #be185d; /* pink-700 */
+            --text-main: #1e293b; /* slate-800 */
+            --text-muted: #475569; /* slate-600 */
         }
 
         * {
@@ -25,12 +27,13 @@
         }
 
         body {
-            font-family: 'Outfit', sans-serif;
+            font-family: 'Roboto', sans-serif;
             background-color: var(--bg-color);
+            /* Soft pastel pink gradient background */
             background-image:
-                radial-gradient(at 0% 0%, hsla(253, 16%, 7%, 1) 0, transparent 50%),
-                radial-gradient(at 50% 0%, hsla(225, 39%, 30%, 1) 0, transparent 50%),
-                radial-gradient(at 100% 0%, hsla(339, 49%, 30%, 1) 0, transparent 50%);
+                radial-gradient(at 0% 0%, hsla(330, 100%, 95%, 1) 0, transparent 50%),
+                radial-gradient(at 50% 0%, hsla(330, 100%, 85%, 1) 0, transparent 50%),
+                radial-gradient(at 100% 0%, hsla(330, 100%, 90%, 1) 0, transparent 50%);
             background-attachment: fixed;
             color: var(--text-main);
             min-height: 100vh;
@@ -46,13 +49,14 @@
             justify-content: center;
             align-items: center;
             width: 100%;
-            max-width: 900px;
+            max-width: 1000px;
             height: 75vh;
             margin: 0 auto;
+            padding: 0 1rem;
         }
 
         .flip-book {
-            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.8);
+            box-shadow: 0 25px 50px -12px rgba(219, 39, 119, 0.3); /* Pink tinted shadow */
             display: none; 
         }
         
@@ -61,9 +65,9 @@
         }
 
         .page {
-            background-color: #fdfbf7;
+            background-color: #fffafb; /* Very light pink/white */
             color: #333;
-            box-shadow: inset 0 0 20px rgba(0,0,0,0.05);
+            box-shadow: inset 0 0 20px rgba(0,0,0,0.03);
             overflow: hidden;
         }
 
@@ -75,7 +79,7 @@
             width: 100%;
             height: 100%;
             background-image: url('https://www.transparenttextures.com/patterns/cream-paper.png');
-            opacity: 0.3;
+            opacity: 0.4;
             pointer-events: none;
         }
 
@@ -91,10 +95,20 @@
             z-index: 2;
         }
 
+        /* Responsive padding for mobile devices */
+        @media (max-width: 600px) {
+            .page-content {
+                padding: 1rem;
+            }
+            .page-cover h1 {
+                font-size: 2.2rem !important;
+            }
+        }
+
         .page-cover {
-            background: linear-gradient(135deg, var(--card-bg), #0f172a);
-            color: var(--text-main);
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            background: linear-gradient(135deg, #fbcfe8, #f472b6); /* pink-200 to pink-400 */
+            color: #1e293b;
+            border: 1px solid rgba(255, 255, 255, 0.5);
         }
         
         .page-cover::after {
@@ -102,17 +116,16 @@
         }
 
         .page-cover h1 {
-            font-size: 2.5rem;
-            font-weight: 800;
-            background: linear-gradient(to right, var(--primary-accent), var(--secondary-accent));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+            font-size: 2.8rem;
+            font-weight: 900;
+            color: #831843; /* pink-900 */
             margin-bottom: 0.5rem;
+            text-shadow: 2px 2px 4px rgba(255,255,255,0.5);
         }
 
         h2 {
             font-size: 1.5rem;
-            font-weight: 600;
+            font-weight: 700;
             margin-bottom: 1rem;
             color: var(--primary-accent);
         }
@@ -121,20 +134,21 @@
             font-size: 1rem;
             line-height: 1.6;
             margin-bottom: 1rem;
-            color: #555;
+            color: var(--text-muted);
         }
 
         .page-cover p {
-            color: var(--text-muted);
+            color: #831843;
+            font-weight: 500;
         }
 
         .photo-container {
             width: 100%;
-            height: 220px;
+            height: 250px;
             border-radius: 12px;
             overflow: hidden;
             margin-bottom: 1.5rem;
-            box-shadow: 0 10px 20px -5px rgba(0, 0, 0, 0.2);
+            box-shadow: 0 10px 20px -5px rgba(219, 39, 119, 0.2);
             position: relative;
         }
 
@@ -148,7 +162,7 @@
             position: absolute;
             bottom: 1rem;
             font-size: 0.9rem;
-            color: #999;
+            color: #94a3b8;
             font-weight: bold;
             width: 100%;
             text-align: center;
@@ -163,10 +177,11 @@
         }
 
         button {
-            background: rgba(255, 255, 255, 0.1);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            color: var(--text-main);
+            background: rgba(255, 255, 255, 0.5);
+            border: 1px solid rgba(219, 39, 119, 0.3);
+            color: var(--primary-accent);
             font-family: inherit;
+            font-weight: 600;
             font-size: 1rem;
             padding: 0.75rem 2rem;
             border-radius: 999px;
@@ -176,9 +191,10 @@
         }
 
         button:hover {
-            background: rgba(255, 255, 255, 0.2);
+            background: rgba(255, 255, 255, 0.8);
             transform: translateY(-2px);
             border-color: var(--primary-accent);
+            box-shadow: 0 4px 10px rgba(219, 39, 119, 0.2);
         }
     </style>
 </head>
@@ -284,24 +300,44 @@
         </button>
     </div>
 
+    <!-- Audio Element for Page Flip Sound -->
+    <audio id="flipSound" preload="auto">
+        <source src="https://www.soundjay.com/misc/sounds/page-flip-01a.mp3" type="audio/mpeg">
+    </audio>
+
     <!-- StPageFlip Script -->
     <script src="https://cdn.jsdelivr.net/npm/page-flip/dist/js/page-flip.browser.min.js"></script>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
+            const flipSound = document.getElementById('flipSound');
+
+            function playFlipSound() {
+                flipSound.currentTime = 0;
+                flipSound.play().catch(e => {
+                    // Ignore errors where the browser blocks autoplay before user interacts
+                });
+            }
+
             const pageFlip = new St.PageFlip(document.getElementById('book'), {
                 width: 400,     // base page width
                 height: 600,    // base page height
-                size: 'stretch',
+                size: 'stretch', // allows resizing based on container
                 minWidth: 300,
                 maxWidth: 450,
                 minHeight: 400,
                 maxHeight: 650,
                 showCover: true,
                 mobileScrollSupport: true,
+                usePortrait: true, // Enables mobile responsive mode (1 page on portrait)
                 maxShadowOpacity: 0.5
             });
 
             pageFlip.loadFromHTML(document.querySelectorAll('.page'));
+
+            // Play sound on flip
+            pageFlip.on('flip', (e) => {
+                playFlipSound();
+            });
 
             document.getElementById('prevBtn').addEventListener('click', () => {
                 pageFlip.flipPrev();
@@ -311,7 +347,7 @@
                 pageFlip.flipNext();
             });
             
-            // Initializing class to show book only when ready to avoid flashing unstyled content
+            // Show book after initialization to prevent layout shifts
             document.getElementById('book').classList.add('st-ready');
         });
     </script>

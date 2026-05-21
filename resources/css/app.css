@@ -4,8 +4,17 @@
 @source '../../storage/framework/views/*.php';
 @source '../**/*.blade.php';
 @source '../**/*.js';
+@source '../**/*.jsx';
+@source '../**/*.tsx';
 
 @theme {
     --font-sans: 'Instrument Sans', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
         'Segoe UI Symbol', 'Noto Color Emoji';
+
+    /* Custom Theme Color Palette */
+    --color-palette-sage-dark: #73877B;
+    --color-palette-sage: #839788;
+    --color-palette-gray: #BDBBB6;
+    --color-palette-rose: #E5D1D0;
+    --color-palette-peach: #F5E4D7;
 }

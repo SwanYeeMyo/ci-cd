@@ -1,26 +1,29 @@
 <?php
 
-use App\Models\User;
-use Illuminate\Http\Request;
+use App\Http\Controllers\ExpenseController;
+use App\Http\Controllers\UserController;
+use App\Http\Controllers\SavingsController;
 use Illuminate\Support\Facades\Route;
+use Inertia\Inertia;
 
 Route::get('/', function () {
-    return view('welcome');
+    return Inertia::render('Welcome', [
+        'laravelVersion' => app()->version(),
+        'phpVersion' => PHP_VERSION,
+    ]);
 });
 
-Route::get('users', function (Request $request) {
+// Users Routes
+Route::get('users', [UserController::class, 'index'])->name('users.index');
 
-    $search = $request->input('search');
-    // $users = User::with('car')->when($search, fn($q, $search) =>
-    // $q->where('name', 'LIKE', '%' . $search . '%')->orWhereHas('car', fn($subQuery) => $subQuery->where('model', 'LIKE', '%' . $search . '%')))->get();
+// Expenses Routes
+Route::get('expenses', [ExpenseController::class, 'index'])->name('expenses.index');
+Route::post('expenses', [ExpenseController::class, 'store'])->name('expenses.store');
+Route::delete('expenses/{expense}', [ExpenseController::class, 'destroy'])->name('expenses.destroy');
+Route::get('girlfriend-expenses', [ExpenseController::class, 'girlfriendIndex'])->name('expenses.girlfriend');
 
-    $users = User::with('car', 'car.insurance')->get();
-    $throughUsers = User::with('car', 'insurancePolicies')->get();
+// Savings & Reports Routes
+Route::get('savings', [SavingsController::class, 'index'])->name('savings.index');
+Route::post('savings', [SavingsController::class, 'updateOrCreate'])->name('savings.store');
 
 
-    return view('test', compact('users', 'throughUsers'));
-});
-
-Route::get('/my-girlfriend', function () {
-    return view('my-girlfriend');
-})->name('my-girlfriend');
