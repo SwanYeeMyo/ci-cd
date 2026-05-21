@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -26,17 +27,18 @@
         body {
             font-family: 'Outfit', sans-serif;
             background-color: var(--bg-color);
-            background-image: 
-                radial-gradient(at 0% 0%, hsla(253,16%,7%,1) 0, transparent 50%), 
-                radial-gradient(at 50% 0%, hsla(225,39%,30%,1) 0, transparent 50%), 
-                radial-gradient(at 100% 0%, hsla(339,49%,30%,1) 0, transparent 50%);
+            background-image:
+                radial-gradient(at 0% 0%, hsla(253, 16%, 7%, 1) 0, transparent 50%),
+                radial-gradient(at 50% 0%, hsla(225, 39%, 30%, 1) 0, transparent 50%),
+                radial-gradient(at 100% 0%, hsla(339, 49%, 30%, 1) 0, transparent 50%);
             background-attachment: fixed;
             color: var(--text-main);
             min-height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
-            overflow: hidden; /* Prevent scrolling during transition */
+            overflow: hidden;
+            /* Prevent scrolling during transition */
         }
 
         .slider-container {
@@ -88,7 +90,7 @@
         .slide.entering-back {
             transform: scale(0.95) translateY(-20px);
         }
-        
+
         .slide.exiting-back {
             transform: scale(1.05) translateY(20px);
             opacity: 0;
@@ -125,8 +127,8 @@
             border-radius: 16px;
             overflow: hidden;
             margin-bottom: 2rem;
-            box-shadow: 0 10px 30px -10px rgba(0,0,0,0.5);
-            border: 2px solid rgba(255,255,255,0.1);
+            box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.5);
+            border: 2px solid rgba(255, 255, 255, 0.1);
         }
 
         .photo-container img {
@@ -141,8 +143,13 @@
         }
 
         @keyframes slowZoom {
-            from { transform: scale(1); }
-            to { transform: scale(1.1); }
+            from {
+                transform: scale(1);
+            }
+
+            to {
+                transform: scale(1.1);
+            }
         }
 
         .controls {
@@ -205,16 +212,16 @@
             background: var(--primary-accent);
             transform: scale(1.3);
         }
-
     </style>
 </head>
+
 <body>
 
     <div class="slider-container">
-        
+
         <!-- Slide 1: Welcome -->
         <div class="slide active" id="slide-0">
-            <h1>Our Story</h1>
+            <h1>Modified SetUp For CI/CD</h1>
             <p>Welcome to a little page dedicated to us. <br> Click next to flip through our memories.</p>
         </div>
 
@@ -222,30 +229,36 @@
         <div class="slide" id="slide-1">
             <div class="photo-container">
                 <!-- Replace src with your actual image URL -->
-                <img src="https://images.unsplash.com/photo-1522673607200-164d1b6ce486?auto=format&fit=crop&q=80&w=800" alt="How we met">
+                <img src="https://images.unsplash.com/photo-1522673607200-164d1b6ce486?auto=format&fit=crop&q=80&w=800"
+                    alt="How we met">
             </div>
             <h2>Chapter 1: The Beginning</h2>
-            <p>This is where our story began. A simple hello that turned into endless conversations. I remember this day like it was yesterday.</p>
+            <p>This is where our story began. A simple hello that turned into endless conversations. I remember this day
+                like it was yesterday.</p>
         </div>
 
         <!-- Slide 3: Adventures -->
         <div class="slide" id="slide-2">
             <div class="photo-container">
                 <!-- Replace src with your actual image URL -->
-                <img src="https://images.unsplash.com/photo-1469334031218-e382a71b716b?auto=format&fit=crop&q=80&w=800" alt="Our adventures">
+                <img src="https://images.unsplash.com/photo-1469334031218-e382a71b716b?auto=format&fit=crop&q=80&w=800"
+                    alt="Our adventures">
             </div>
             <h2>Chapter 2: Our Adventures</h2>
-            <p>From late-night food runs to spontaneous trips. Every moment spent exploring the world together has been nothing short of magical.</p>
+            <p>From late-night food runs to spontaneous trips. Every moment spent exploring the world together has been
+                nothing short of magical.</p>
         </div>
 
         <!-- Slide 4: Present -->
         <div class="slide" id="slide-3">
             <div class="photo-container">
                 <!-- Replace src with your actual image URL -->
-                <img src="https://images.unsplash.com/photo-1518199266791-5375a83190b7?auto=format&fit=crop&q=80&w=800" alt="Us today">
+                <img src="https://images.unsplash.com/photo-1518199266791-5375a83190b7?auto=format&fit=crop&q=80&w=800"
+                    alt="Us today">
             </div>
             <h2>Chapter 3: Here and Now</h2>
-            <p>You are my best friend, my biggest supporter, and my favorite person. I can't wait to see what the future holds for us.</p>
+            <p>You are my best friend, my biggest supporter, and my favorite person. I can't wait to see what the future
+                holds for us.</p>
         </div>
 
         <div class="controls">
@@ -282,7 +295,7 @@
 
         function updateControls() {
             prevBtn.disabled = currentSlide === 0;
-            
+
             if (currentSlide === slides.length - 1) {
                 nextBtn.innerHTML = 'Finish <span style="color:var(--primary-accent)">❤️</span>';
             } else {
@@ -302,7 +315,7 @@
                 goToSlide(nextIndex, direction > 0);
             } else if (nextIndex === slides.length) {
                 // If they click finish on last slide, maybe just loop back or show an alert
-                goToSlide(0, false); 
+                goToSlide(0, false);
             }
         }
 
@@ -338,4 +351,5 @@
         }
     </script>
 </body>
+
 </html>
