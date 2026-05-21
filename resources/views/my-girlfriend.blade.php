@@ -221,7 +221,7 @@
 
         <!-- Slide 1: Welcome -->
         <div class="slide active" id="slide-0">
-            <h1>Modified SetUp For CI/CD</h1>
+            <h1>CI/CD</h1>
             <p>Welcome to a little page dedicated to us. <br> Click next to flip through our memories.</p>
         </div>
 
