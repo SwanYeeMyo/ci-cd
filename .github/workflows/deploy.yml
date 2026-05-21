@@ -21,7 +21,7 @@ jobs:
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           envs: GITHUB_REF_NAME
           script: |
-            cd /var/www/code/ci-cd
+            cd /code/ci-cd
 
             git fetch --tags
             git checkout $GITHUB_REF_NAME
