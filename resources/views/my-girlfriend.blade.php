@@ -11,7 +11,7 @@
     <style>
         :root {
             --bg-color: #0f172a;
-            --card-bg: rgba(30, 41, 59, 0.7);
+            --card-bg: rgba(30, 41, 59, 0.9);
             --primary-accent: #f43f5e;
             --secondary-accent: #8b5cf6;
             --text-main: #f8fafc;
@@ -35,69 +35,74 @@
             color: var(--text-main);
             min-height: 100vh;
             display: flex;
+            flex-direction: column;
             justify-content: center;
             align-items: center;
             overflow: hidden;
-            /* Prevent scrolling during transition */
         }
 
-        .slider-container {
-            position: relative;
+        .container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
             width: 100%;
             max-width: 900px;
-            height: 80vh;
-            max-height: 700px;
-            perspective: 1000px;
+            height: 75vh;
+            margin: 0 auto;
         }
 
-        .slide {
+        .flip-book {
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.8);
+            display: none; 
+        }
+        
+        .flip-book.st-ready {
+            display: block;
+        }
+
+        .page {
+            background-color: #fdfbf7;
+            color: #333;
+            box-shadow: inset 0 0 20px rgba(0,0,0,0.05);
+            overflow: hidden;
+        }
+
+        .page::after {
+            content: "";
             position: absolute;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            opacity: 0;
-            visibility: hidden;
-            transform: scale(0.95) translateY(20px);
-            transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
-            background: var(--card-bg);
-            backdrop-filter: blur(16px);
-            -webkit-backdrop-filter: blur(16px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 24px;
-            padding: 3rem;
-            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+            background-image: url('https://www.transparenttextures.com/patterns/cream-paper.png');
+            opacity: 0.3;
+            pointer-events: none;
+        }
+
+        .page-content {
+            padding: 2rem;
+            height: 100%;
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
             text-align: center;
+            position: relative;
+            z-index: 2;
         }
 
-        .slide.active {
-            opacity: 1;
-            visibility: visible;
-            transform: scale(1) translateY(0);
-            z-index: 10;
+        .page-cover {
+            background: linear-gradient(135deg, var(--card-bg), #0f172a);
+            color: var(--text-main);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .page-cover::after {
+            display: none;
         }
 
-        .slide.exiting {
-            transform: scale(1.05) translateY(-20px);
-            opacity: 0;
-            z-index: 5;
-        }
-
-        .slide.entering-back {
-            transform: scale(0.95) translateY(-20px);
-        }
-
-        .slide.exiting-back {
-            transform: scale(1.05) translateY(20px);
-            opacity: 0;
-        }
-
-        h1 {
-            font-size: 3.5rem;
+        .page-cover h1 {
+            font-size: 2.5rem;
             font-weight: 800;
             background: linear-gradient(to right, var(--primary-accent), var(--secondary-accent));
             -webkit-background-clip: text;
@@ -106,59 +111,53 @@
         }
 
         h2 {
-            font-size: 2rem;
+            font-size: 1.5rem;
             font-weight: 600;
             margin-bottom: 1rem;
             color: var(--primary-accent);
         }
 
         p {
-            font-size: 1.25rem;
+            font-size: 1rem;
+            line-height: 1.6;
+            margin-bottom: 1rem;
+            color: #555;
+        }
+
+        .page-cover p {
             color: var(--text-muted);
-            max-width: 600px;
-            line-height: 1.8;
-            margin-bottom: 2rem;
         }
 
         .photo-container {
             width: 100%;
-            max-width: 400px;
-            height: 300px;
-            border-radius: 16px;
+            height: 220px;
+            border-radius: 12px;
             overflow: hidden;
-            margin-bottom: 2rem;
-            box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.5);
-            border: 2px solid rgba(255, 255, 255, 0.1);
+            margin-bottom: 1.5rem;
+            box-shadow: 0 10px 20px -5px rgba(0, 0, 0, 0.2);
+            position: relative;
         }
 
         .photo-container img {
             width: 100%;
             height: 100%;
             object-fit: cover;
-            transition: transform 0.5s ease;
         }
 
-        .slide.active .photo-container img {
-            animation: slowZoom 10s infinite alternate;
-        }
-
-        @keyframes slowZoom {
-            from {
-                transform: scale(1);
-            }
-
-            to {
-                transform: scale(1.1);
-            }
+        .page-number {
+            position: absolute;
+            bottom: 1rem;
+            font-size: 0.9rem;
+            color: #999;
+            font-weight: bold;
+            width: 100%;
+            text-align: center;
+            left: 0;
         }
 
         .controls {
-            position: absolute;
-            bottom: 2rem;
-            left: 0;
-            width: 100%;
+            margin-top: 2rem;
             display: flex;
-            justify-content: center;
             gap: 1rem;
             z-index: 20;
         }
@@ -174,181 +173,147 @@
             cursor: pointer;
             transition: all 0.3s ease;
             backdrop-filter: blur(8px);
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
         }
 
-        button:hover:not(:disabled) {
+        button:hover {
             background: rgba(255, 255, 255, 0.2);
             transform: translateY(-2px);
             border-color: var(--primary-accent);
-        }
-
-        button:disabled {
-            opacity: 0.3;
-            cursor: not-allowed;
-        }
-
-        .progress-dots {
-            display: flex;
-            gap: 0.5rem;
-            position: absolute;
-            bottom: -3rem;
-            left: 50%;
-            transform: translateX(-50%);
-        }
-
-        .dot {
-            width: 10px;
-            height: 10px;
-            border-radius: 50%;
-            background: rgba(255, 255, 255, 0.2);
-            transition: all 0.3s ease;
-            cursor: pointer;
-        }
-
-        .dot.active {
-            background: var(--primary-accent);
-            transform: scale(1.3);
         }
     </style>
 </head>
 
 <body>
 
-    <div class="slider-container">
-
-        <!-- Slide 1: Welcome -->
-        <div class="slide active" id="slide-0">
-            <h1>CI/CD</h1>
-            <p>Welcome to a little page dedicated to us. <br> Click next to flip through our memories.</p>
-        </div>
-
-        <!-- Slide 2: The Beginning -->
-        <div class="slide" id="slide-1">
-            <div class="photo-container">
-                <!-- Replace src with your actual image URL -->
-                <img src="https://images.unsplash.com/photo-1522673607200-164d1b6ce486?auto=format&fit=crop&q=80&w=800"
-                    alt="How we met">
+    <div class="container">
+        <div class="flip-book" id="book">
+            <!-- 1. Cover Page -->
+            <div class="page page-cover front-cover" data-density="hard">
+                <div class="page-content">
+                    <h1>Our Story</h1>
+                    <p>Welcome to a little page dedicated to us.<br><br>Flip to begin our journey.</p>
+                </div>
             </div>
-            <h2>Chapter 1: The Beginning</h2>
-            <p>This is where our story began. A simple hello that turned into endless conversations. I remember this day
-                like it was yesterday.</p>
-        </div>
 
-        <!-- Slide 3: Adventures -->
-        <div class="slide" id="slide-2">
-            <div class="photo-container">
-                <!-- Replace src with your actual image URL -->
-                <img src="https://images.unsplash.com/photo-1469334031218-e382a71b716b?auto=format&fit=crop&q=80&w=800"
-                    alt="Our adventures">
+            <!-- 2. Inside Cover -->
+            <div class="page">
+                <div class="page-content">
+                    <p><i>"Every love story is beautiful, but ours is my favorite."</i></p>
+                    <div class="page-number">1</div>
+                </div>
             </div>
-            <h2>Chapter 2: Our Adventures</h2>
-            <p>From late-night food runs to spontaneous trips. Every moment spent exploring the world together has been
-                nothing short of magical.</p>
-        </div>
 
-        <!-- Slide 4: Present -->
-        <div class="slide" id="slide-3">
-            <div class="photo-container">
-                <!-- Replace src with your actual image URL -->
-                <img src="https://images.unsplash.com/photo-1518199266791-5375a83190b7?auto=format&fit=crop&q=80&w=800"
-                    alt="Us today">
+            <!-- 3. Page 2 -->
+            <div class="page">
+                <div class="page-content">
+                    <div class="photo-container">
+                        <img src="https://images.unsplash.com/photo-1522673607200-164d1b6ce486?auto=format&fit=crop&q=80&w=800" alt="How we met">
+                    </div>
+                    <h2>The Beginning</h2>
+                    <p>This is where our story began. A simple hello that turned into endless conversations. I remember this day like it was yesterday.</p>
+                    <div class="page-number">2</div>
+                </div>
             </div>
-            <h2>Chapter 3: Here and Now</h2>
-            <p>You are my best friend, my biggest supporter, and my favorite person. I can't wait to see what the future
-                holds for us.</p>
-        </div>
 
-        <div class="controls">
-            <button id="prevBtn" onclick="changeSlide(-1)" disabled>
-                <span>&larr;</span> Previous
-            </button>
-            <button id="nextBtn" onclick="changeSlide(1)">
-                Next <span>&rarr;</span>
-            </button>
-        </div>
+            <!-- 4. Page 3 -->
+            <div class="page">
+                <div class="page-content">
+                    <div class="photo-container">
+                        <img src="https://images.unsplash.com/photo-1469334031218-e382a71b716b?auto=format&fit=crop&q=80&w=800" alt="Our adventures">
+                    </div>
+                    <h2>Our Adventures</h2>
+                    <p>From late-night food runs to spontaneous trips. Every moment spent exploring the world together has been nothing short of magical.</p>
+                    <div class="page-number">3</div>
+                </div>
+            </div>
 
-        <div class="progress-dots" id="dotsContainer">
-            <!-- Dots generated by JS -->
-        </div>
+            <!-- 5 to 14. 10 Dummy pages -->
+            @for ($i = 1; $i <= 10; $i++)
+            <div class="page">
+                <div class="page-content">
+                    <div class="photo-container">
+                        <img src="https://images.unsplash.com/photo-1518199266791-5375a83190b7?auto=format&fit=crop&q=80&w=800&sig={{ $i }}" alt="Dummy Image {{ $i }}">
+                    </div>
+                    <h2>Chapter {{ $i + 2 }}</h2>
+                    <p>This is memory #{{ $i }} of our wonderful journey together. Our bond continues to grow stronger with each passing day. Here's to more adventures.</p>
+                    <div class="page-number">{{ $i + 3 }}</div>
+                </div>
+            </div>
+            @endfor
 
+            <!-- 15. Here and Now -->
+            <div class="page">
+                <div class="page-content">
+                    <h2>Here and Now</h2>
+                    <p>You are my best friend, my biggest supporter, and my favorite person. I can't wait to see what the future holds for us.</p>
+                    <div class="page-number">14</div>
+                </div>
+            </div>
+            
+            <!-- 16. Dedication -->
+            <div class="page">
+                <div class="page-content">
+                    <p>Thank you for everything.</p>
+                    <div class="page-number">15</div>
+                </div>
+            </div>
+
+            <!-- 17. Back Cover Inside -->
+            <div class="page">
+                <div class="page-content">
+                    <p>To be continued...</p>
+                    <div class="page-number">16</div>
+                </div>
+            </div>
+
+            <!-- 18. Back Cover -->
+            <div class="page page-cover back-cover" data-density="hard">
+                <div class="page-content">
+                    <h1>The End</h1>
+                </div>
+            </div>
+        </div>
     </div>
 
+    <div class="controls">
+        <button id="prevBtn">
+            &larr; Previous
+        </button>
+        <button id="nextBtn">
+            Next &rarr;
+        </button>
+    </div>
+
+    <!-- StPageFlip Script -->
+    <script src="https://cdn.jsdelivr.net/npm/page-flip/dist/js/page-flip.browser.min.js"></script>
     <script>
-        let currentSlide = 0;
-        const slides = document.querySelectorAll('.slide');
-        const prevBtn = document.getElementById('prevBtn');
-        const nextBtn = document.getElementById('nextBtn');
-        const dotsContainer = document.getElementById('dotsContainer');
-
-        // Create dots
-        slides.forEach((_, index) => {
-            const dot = document.createElement('div');
-            dot.classList.add('dot');
-            if (index === 0) dot.classList.add('active');
-            dot.onclick = () => goToSlide(index);
-            dotsContainer.appendChild(dot);
-        });
-        const dots = document.querySelectorAll('.dot');
-
-        function updateControls() {
-            prevBtn.disabled = currentSlide === 0;
-
-            if (currentSlide === slides.length - 1) {
-                nextBtn.innerHTML = 'Finish <span style="color:var(--primary-accent)">❤️</span>';
-            } else {
-                nextBtn.innerHTML = 'Next <span>&rarr;</span>';
-            }
-        }
-
-        function updateDots() {
-            dots.forEach((dot, index) => {
-                dot.classList.toggle('active', index === currentSlide);
+        document.addEventListener('DOMContentLoaded', function() {
+            const pageFlip = new St.PageFlip(document.getElementById('book'), {
+                width: 400,     // base page width
+                height: 600,    // base page height
+                size: 'stretch',
+                minWidth: 300,
+                maxWidth: 450,
+                minHeight: 400,
+                maxHeight: 650,
+                showCover: true,
+                mobileScrollSupport: true,
+                maxShadowOpacity: 0.5
             });
-        }
 
-        function changeSlide(direction) {
-            const nextIndex = currentSlide + direction;
-            if (nextIndex >= 0 && nextIndex < slides.length) {
-                goToSlide(nextIndex, direction > 0);
-            } else if (nextIndex === slides.length) {
-                // If they click finish on last slide, maybe just loop back or show an alert
-                goToSlide(0, false);
-            }
-        }
+            pageFlip.loadFromHTML(document.querySelectorAll('.page'));
 
-        function goToSlide(index, isForward = true) {
-            if (index === currentSlide) return;
+            document.getElementById('prevBtn').addEventListener('click', () => {
+                pageFlip.flipPrev();
+            });
 
-            const current = slides[currentSlide];
-            const next = slides[index];
-
-            // Determine direction if clicked via dots
-            if (index > currentSlide) isForward = true;
-            if (index < currentSlide) isForward = false;
-
-            // Reset classes
-            slides.forEach(s => s.className = 'slide');
-
-            if (isForward) {
-                current.classList.add('exiting');
-                next.classList.add('active');
-            } else {
-                current.classList.add('exiting-back');
-                next.classList.add('entering-back');
-                // Small timeout to allow the initial transform to apply before transitioning to active
-                setTimeout(() => {
-                    next.classList.add('active');
-                    next.classList.remove('entering-back');
-                }, 10);
-            }
-
-            currentSlide = index;
-            updateControls();
-            updateDots();
-        }
+            document.getElementById('nextBtn').addEventListener('click', () => {
+                pageFlip.flipNext();
+            });
+            
+            // Initializing class to show book only when ready to avoid flashing unstyled content
+            document.getElementById('book').classList.add('st-ready');
+        });
     </script>
 </body>
 
