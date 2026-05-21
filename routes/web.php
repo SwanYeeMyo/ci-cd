@@ -20,3 +20,7 @@ Route::get('users', function (Request $request) {
 
     return view('test', compact('users', 'throughUsers'));
 });
+
+Route::get('/my-girlfriend', function () {
+    return view('my-girlfriend');
+})->name('my-girlfriend');
