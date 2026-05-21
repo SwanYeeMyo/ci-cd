@@ -21,18 +21,18 @@ jobs:
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           envs: GITHUB_REF_NAME
           script: |
-            cd /code/ci-cd
+            cd /root/code/ci-cd
 
-            git fetch --tags
-            git checkout $GITHUB_REF_NAME
+             git fetch --tags
+             git checkout $GITHUB_REF_NAME
 
-            # 1. Rebuild and start the containers
-            docker compose up -d --build
+             # 1. Rebuild and start the containers
+             docker compose up -d --build
 
-            # 2. Run Database Migrations
-            # The '-T' flag is necessary for CI/CD pipelines so it doesn't wait for human input
-            docker compose exec -T app php artisan migrate --force
+             # 2. Run Database Migrations
+             # The '-T' flag is necessary for CI/CD pipelines so it doesn't wait for human input
+             docker compose exec -T app php artisan migrate --force
 
-            # Optional: Clear and cache Laravel config/routes for better performance
-            docker compose exec -T app php artisan optimize:clear
-            docker compose exec -T app php artisan optimize
+             # Optional: Clear and cache Laravel config/routes for better performance
+             docker compose exec -T app php artisan optimize:clear
+             docker compose exec -T app php artisan optimize
